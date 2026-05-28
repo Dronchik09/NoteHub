@@ -1,8 +1,16 @@
 import axios from 'axios';
 
+const getBaseUrl = () => {
+  if (typeof window !== 'undefined') {
+    return '/api';
+  }
+  if (process.env.VERCEL_URL) {
+    return `https://${process.env.VERCEL_URL}/api`;
+  }
+  return 'http://localhost:3000/api';
+};
+
 export const nextServer = axios.create({
-  // process.env.NEXT_PUBLIC_API_URL +
-  baseURL: '/api',
+  baseURL: getBaseUrl(),
   withCredentials: true,
 });
-//const myToken = process.env.NEXT_PUBLIC_NOTEHUB_TOKEN;
