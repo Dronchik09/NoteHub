@@ -1,4 +1,4 @@
-import { cookies } from 'next/headers';
+import { cookies, headers } from 'next/headers';
 import { nextServer } from './api';
 import { CheckSessionRequest, FetchNotesResponse } from './clientApi';
 import { User } from '@/types/user';
@@ -16,8 +16,13 @@ export const checkServerSession = async () => {
 };
 export const getServerMe = async () => {
   const cookiesData = await cookies();
+  const headersData = await headers();
 
+  const host = headersData.get('host');
+  const protocol = host?.includes('localhost') ? 'http' : 'https';
+  const exactBaseUrl = `${protocol}://${host}/api`;
   const responce = await nextServer.get<User>(`/users/me`, {
+    baseURL: exactBaseUrl,
     headers: {
       Cookie: cookiesData.toString(),
     },
