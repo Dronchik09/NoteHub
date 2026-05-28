@@ -42,8 +42,13 @@ export const fetchNotesServer = async (
     params.tag = categoryId;
   }
   const cookiesData = await cookies();
+  const headersData = await headers();
+  const host = headersData.get('host');
+  const protocol = host?.includes('localhost') ? 'http' : 'https';
+  const exactBaseUrl = `${protocol}://${host}/api`;
 
   const response = await nextServer.get<FetchNotesResponse>(`/notes`, {
+    baseURL: exactBaseUrl,
     params,
     headers: {
       Cookie: cookiesData.toString(),
@@ -53,7 +58,13 @@ export const fetchNotesServer = async (
 };
 export const fetchNoteByIdServer = async (id: string): Promise<Note> => {
   const cookiesData = await cookies();
+  const headersData = await headers();
+  const host = headersData.get('host');
+  const protocol = host?.includes('localhost') ? 'http' : 'https';
+  const exactBaseUrl = `${protocol}://${host}/api`;
+
   const response = await nextServer.get<Note>(`/notes/${id}`, {
+    baseURL: exactBaseUrl,
     headers: {
       Cookie: cookiesData.toString(),
     },
