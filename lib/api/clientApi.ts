@@ -2,7 +2,7 @@ import { Note } from '@/types/note';
 import { nextServer } from './api';
 import { User } from '@/types/user';
 
-const baseURL = process.env.NEXT_PUBLIC_API_URL + '/api';
+const baseURL = '/api';
 
 export interface FetchNotesResponse {
   notes: Note[];
